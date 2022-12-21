@@ -1,0 +1,5 @@
+Installer les composer suivants:
+    -> composer req laravel/ui
+        :=> php artisan ui:auth
+
+    -> composer req laravel/sanctum
