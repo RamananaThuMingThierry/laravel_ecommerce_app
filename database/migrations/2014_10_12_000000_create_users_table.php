@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('mdp');
             $table->rememberToken();
+            $table->integer('roles')->default(0)->nullable()->comment("0 => users, 1 => admin");
             $table->timestamps();
         });
     }
