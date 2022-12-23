@@ -20,6 +20,7 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
 
     Route::post('logout', [AuthController::class, 'logout']);
 
+    Route::get('view-category', [CategoryController::class, 'index']);
     Route::post('store-category', [CategoryController::class, 'store']);
 });
 
