@@ -22,6 +22,15 @@ class CategoryController extends Controller
             'category' => $category
         ]);
     }
+    
+    public function allcategory()
+    {
+        $category = Category::where('status','0')->get();
+        return response()->json([
+            'status' => 200,
+            'category' => $category
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -52,7 +61,7 @@ class CategoryController extends Controller
                 'slug' => $request->slug,
                 'name' => $request->name,
                 'description' => $request->description,
-                'status' => ($request->status === true ? 1 : 0),
+                'status' => ($request->status === true ? "1" : "0"),
             ]);
             
             return response()->json([
