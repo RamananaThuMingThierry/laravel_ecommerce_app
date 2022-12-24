@@ -17,13 +17,19 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
     });
 
     Route::get('view-category', [CategoryController::class, 'index']);
+
+    // Modifier le catégorie
+    Route::get('edit-category/{id}', [CategoryController::class, 'edit']);
+    Route::put('update-category/{id}', [CategoryController::class, 'update']);
+    Route::delete('delete-category/{id}', [CategoryController::class, 'destroy']);
     
+    // Créer un catégorie
     Route::post('store-category', [CategoryController::class, 'store']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function(){
 
     Route::post('logout', [AuthController::class, 'logout']);
-    
+
 });
 

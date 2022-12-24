@@ -52,7 +52,7 @@ class CategoryController extends Controller
                 'slug' => $request->slug,
                 'name' => $request->name,
                 'description' => $request->description,
-                'status' => ($request->status == true ? 1 : 0),
+                'status' => ($request->status === true ? 1 : 0),
             ]);
             
             return response()->json([
@@ -73,6 +73,21 @@ class CategoryController extends Controller
         //
     }
 
+    public function edit($id){
+        $category = Category::find($id);
+
+        if($category){
+            return response()->json([
+                'status' => 200,
+                'category' => $category
+            ]);
+        }else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'No category id found'
+            ]);
+        }
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -80,9 +95,46 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    
+     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'meta_title' => 'required|max:191',
+            'slug' => 'required|max:191',
+            'name' => 'required|max:191',
+        ]);
+
+        if($validator->fails()){
+            
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->messages(), 
+            ]);
+
+        }else{
+            $category = Category::find($id);
+
+            if($category){
+                $category->meta_title = $request->meta_title;
+                $category->meta_keyword = $request->meta_keyword;
+                $category->meta_description = $request->meta_description;
+                $category->slug = $request->slug;
+                $category->name = $request->name;
+                $category->description = $request->description;
+                $category->status = $request->status === true ? 1 : 0;
+                $category->save();
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Modification effectuée!',
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'No category ID found!'
+                ]);
+            }
+        }
     }
 
     /**
@@ -91,8 +143,21 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
-    {
-        //
+    public function destroy($id_category)
+    {   
+        $category = Category::find($id_category);
+
+        if($category){
+            $category->delete();
+            return response()->json([
+                'status' => 200,
+                'message' => 'Category deleted successfully!',
+            ]);
+        }else{
+            return response()->json([
+                'status' => 404,
+                'message' => "No Category Id found"
+            ]);
+        }
     }
 }
