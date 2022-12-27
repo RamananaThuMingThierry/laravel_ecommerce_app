@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('Product', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('slug');
             $table->string('name');
@@ -24,9 +24,12 @@ return new class extends Migration
             $table->mediumText('meta_description')->nullable();
 
             $table->integer('quantity')->nullable();
+            $table->integer('selling_price')->nullable();
+            $table->integer('original_price')->nullable();
             $table->string('image')->nullable();
             $table->string('brand')->nullable();
             $table->integer('id_category');
+
             $table->tinyInteger('featured')->default(0)->comment("La valeur par defaut est 0");
             $table->tinyInteger('popular')->default(0)->comment("La valeur par defaut est 0");
             $table->tinyInteger('status')->default(0)->comment("La valeur par defaut est 0");

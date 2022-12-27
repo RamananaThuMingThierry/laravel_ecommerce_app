@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -13,9 +14,14 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        
+        $product = Product::all();
+        return response()->json([
+            'status' => 200,
+            'produits' => $product
+        ]);
     }
 
     /**
@@ -35,7 +41,7 @@ class ProductController extends Controller
             'selling_price' => 'required|max:20',
             'original_price' => 'required|max:20',
             'quantity' => 'required|max:4',
-            'image' => 'required|max:2048|image|mimes:jpge,png,jpg',
+            'image' => 'max:2048',
         ]);
 
         if($validator->fails()){
@@ -51,6 +57,7 @@ class ProductController extends Controller
 
             $product->name = $request->name;
             $product->slug = $request->slug;
+            $product->id_category = $request->id_category;
             $product->description = $request->description;
               
             $product->meta_title = $request->meta_title;
@@ -73,7 +80,7 @@ class ProductController extends Controller
             $product->featured = $request->featured == true ? "1" : "0";
             $product->popular = $request->popular == true ? "1" : "0";
             $product->status = $request->status == true ? "1" : "0";
-            
+            $product->save();
             return response()->json([
                 'status' => 200,
                 'message' => 'Enregistrement effectuée!',

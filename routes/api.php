@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\CategoryController;
 
 Route::post('login', [AuthController::class, 'login']);
@@ -28,6 +29,7 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
 
     // Produit
     Route::get('all-category', [CategoryController::class, 'allcategory']); // Récupérer tous les catégories ayant status = 0
+    Route::get('list-product', [ProductController::class, 'index']);   // Liste des produits
     Route::post('store-product', [ProductController::class, 'store']);   // Créer un product
     
     

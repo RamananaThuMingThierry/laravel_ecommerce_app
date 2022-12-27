@@ -44,6 +44,7 @@ class CategoryController extends Controller
             'meta_title' => 'required|max:191',
             'slug' => 'required|max:191',
             'name' => 'required|max:191',
+            'description' => 'required|max:191',
         ]);
 
         if($validator->fails()){
@@ -54,15 +55,16 @@ class CategoryController extends Controller
             ]);
 
         }else{
-            Category::create([
-                'meta_title' => $request->meta_title,
-                'meta_keyword' => $request->meta_keyword,
-                'meta_description' => $request->meta_description,
-                'slug' => $request->slug,
-                'name' => $request->name,
-                'description' => $request->description,
-                'status' => ($request->status === true ? "1" : "0"),
-            ]);
+               $category = new Category;
+               
+                $category->meta_title = $request->meta_title;
+                $category->meta_keyword = $request->meta_keyword;
+                $category->meta_description = $request->meta_description;
+                $category->slug = $request->slug;
+                $category->name = $request->name;
+                $category->description = $request->description;
+                $category->status = ($request->status === true ? "1" : "0");
+                $category->save();
             
             return response()->json([
                 'status' => 200,
