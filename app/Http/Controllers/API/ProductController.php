@@ -32,6 +32,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        
         $validator = Validator::make($request->all(), [
             'id_category' => 'required|max:191',
             'meta_title' => 'required|max:191',
@@ -41,7 +42,7 @@ class ProductController extends Controller
             'selling_price' => 'required|max:20',
             'original_price' => 'required|max:20',
             'quantity' => 'required|max:4',
-            'image' => 'max:2048',
+            'image' => 'required|mimes:jpeg,jpg,png|max:2048|image',
         ]);
 
         if($validator->fails()){
@@ -73,7 +74,7 @@ class ProductController extends Controller
                 $file = $request->file('image');
                 $extension = $file->getClientOriginalExtension();
                 $filename = time() . '.' .$extension;
-                $file->move("uploads/product/". $filename);
+                $file->move("uploads/product/", $filename);
                 $product->image = 'uploads/product/'.$filename;
             }
             
@@ -94,9 +95,21 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $product = Product::find($id);
+        
+        if($product){
+            return response()->json([
+                'status' => 200,
+                'product' => $product
+            ]);
+        }else{
+            return response()->json([
+                'status' => 400,
+                'message' => 'Not found id product'
+            ]);
+        }
     }
 
     /**

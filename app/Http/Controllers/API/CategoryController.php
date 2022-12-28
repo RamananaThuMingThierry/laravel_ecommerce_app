@@ -84,6 +84,14 @@ class CategoryController extends Controller
         //
     }
 
+    public function nameCategory($id){
+        $category = Category::find($id);
+        return response()->json([
+            'status' => 200,
+            'category' => $category
+        ]);
+    }
+
     public function edit($id){
         $category = Category::find($id);
 
