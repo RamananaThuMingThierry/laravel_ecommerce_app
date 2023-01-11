@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\UsersController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\CategoryController;
 
@@ -24,7 +25,6 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
 
     Route::post('store-category', [CategoryController::class, 'store']);   // Créer un catégorie
     Route::get('edit-category/{id}', [CategoryController::class, 'edit']); // Modifier le catégorie
-    Route::get('name-category/{id}', [CategoryController::class, 'nameCategory']); // Nom du catégorie
     Route::put('update-category/{id}', [CategoryController::class, 'update']); // Modifier le catégorie
     Route::delete('delete-category/{id}', [CategoryController::class, 'destroy']); // Supprimer une catégorie
 
@@ -32,7 +32,14 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
     Route::get('all-category', [CategoryController::class, 'allcategory']); // Récupérer tous les catégories ayant status = 0
     Route::get('list-product', [ProductController::class, 'index']);   // Liste des produits
     Route::get('see-product/{id}', [ProductController::class, 'show']);   // Voir un produits
+    Route::put('update-product/{id}', [ProductController::class, 'update']);   // Modifier un produits
     Route::post('store-product', [ProductController::class, 'store']);   // Créer un product
+    
+    // users
+    Route::get('users', [UsersController::class, 'index']);   // Liste des utilisateurs
+    Route::get('see-product/{id}', [UsersController::class, 'show']);   // Voir un utilisateur
+    Route::put('update-product/{id}', [UsersController::class, 'update']);   // Modifier un utilisateur
+    Route::post('store-product', [UsersController::class, 'store']);   // Créer un utilisateur
 });
 
 Route::middleware(['auth:sanctum'])->group(function(){
