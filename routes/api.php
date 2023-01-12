@@ -35,12 +35,11 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
     Route::get('retreive-product/{id}', [ProductController::class, 'retreive']);   // Voir un produits
     Route::put('update-product/{id}', [ProductController::class, 'update']);   // Modifier un produits
    
-    
     // users
     Route::get('users', [UsersController::class, 'index']);   // Liste des utilisateurs
-    Route::get('see-product/{id}', [UsersController::class, 'show']);   // Voir un utilisateur
-    Route::put('update-product/{id}', [UsersController::class, 'update']);   // Modifier un utilisateur
-    Route::post('store-product', [UsersController::class, 'store']);   // Créer un utilisateur
+    // Route::get('see-users/{id}', [UsersController::class, 'show']);   // Voir un utilisateur
+    // Route::put('update-users/{id}', [UsersController::class, 'update']);   // Modifier un utilisateur
+    // Route::post('store-users', [UsersController::class, 'store']);   // Créer un utilisateur
 });
 
 Route::middleware(['auth:sanctum'])->group(function(){

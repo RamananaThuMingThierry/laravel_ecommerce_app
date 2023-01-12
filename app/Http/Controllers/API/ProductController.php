@@ -31,8 +31,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        
+    {   
         $validator = Validator::make($request->all(), [
             'id_category' => 'required|max:191',
             'meta_title' => 'required|max:191',
@@ -119,7 +118,7 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'id_category' => 'required|max:191',
@@ -132,15 +131,12 @@ class ProductController extends Controller
             'quantity' => 'required|max:4'
         ]);
 
-        if($validator->fails()){
-            
+        if($validator->fails()){    
             return response()->json([
                 'status' => 422,
                 'errors' => $validator->messages(), 
             ]);
-
         }else{
-             
             $product =  Product::find($id);
 
             if($product){
