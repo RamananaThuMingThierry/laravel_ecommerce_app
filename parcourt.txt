@@ -17,3 +17,9 @@ Créer une migration
 
 Créer un Controllers
     -> php artisan make:controller NomController --api --model=nom_model
+
+. Pour démarrer le server laravel   
+    -> php artisan serve
+
+. Pour démarrer le server react
+    -> npm start

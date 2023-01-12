@@ -95,7 +95,7 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function retreive($id)
     {
         $product = Product::find($id);
         
@@ -119,9 +119,73 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request,$id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id_category' => 'required|max:191',
+            'meta_title' => 'required|max:191',
+            'slug' => 'required|max:191',
+            'name' => 'required|max:191',
+            'brand' => 'required|max:20',
+            'selling_price' => 'required|max:20',
+            'original_price' => 'required|max:20',
+            'quantity' => 'required|max:4'
+        ]);
+
+        if($validator->fails()){
+            
+            return response()->json([
+                'status' => 422,
+                'errors' => $validator->messages(), 
+            ]);
+
+        }else{
+             
+            $product =  Product::find($id);
+
+            if($product){
+                $product->name = $request->name;
+                $product->slug = $request->slug;
+                $product->id_category = $request->id_category;
+                $product->description = $request->description;
+                  
+                $product->meta_title = $request->meta_title;
+                $product->meta_keyword = $request->meta_keyword;
+                $product->meta_description = $request->meta_description;
+                
+                $product->brand = $request->brand;
+                $product->selling_price = $request->selling_price;
+                $product->original_price = $request->original_price;
+                $product->quantity = $request->quantity;
+                
+                if($request->hasFile("image")){
+                    $path = $product->image;
+                    if(File::exists($path)){
+                        File::delete($path);
+                    }
+                    $file = $request->file('image');
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = time() . '.' .$extension;
+                    $file->move("uploads/product/", $filename);
+                    $product->image = 'uploads/product/'.$filename;
+                }
+                
+                $product->featured = $request->featured == true ? "1" : "0";
+                $product->popular = $request->popular == true ? "1" : "0";
+                $product->status = $request->status == true ? "1" : "0";
+                $product->save();
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Modification effectuée!',
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Product Not Found'
+                ]);
+            }
+   
+        }
     }
 
     /**

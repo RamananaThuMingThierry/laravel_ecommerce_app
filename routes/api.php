@@ -30,10 +30,11 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
 
     // Produit
     Route::get('all-category', [CategoryController::class, 'allcategory']); // Récupérer tous les catégories ayant status = 0
-    Route::get('list-product', [ProductController::class, 'index']);   // Liste des produits
-    Route::get('see-product/{id}', [ProductController::class, 'show']);   // Voir un produits
-    Route::put('update-product/{id}', [ProductController::class, 'update']);   // Modifier un produits
     Route::post('store-product', [ProductController::class, 'store']);   // Créer un product
+    Route::get('list-product', [ProductController::class, 'index']);   // Liste des produits
+    Route::get('retreive-product/{id}', [ProductController::class, 'retreive']);   // Voir un produits
+    Route::put('update-product/{id}', [ProductController::class, 'update']);   // Modifier un produits
+   
     
     // users
     Route::get('users', [UsersController::class, 'index']);   // Liste des utilisateurs
