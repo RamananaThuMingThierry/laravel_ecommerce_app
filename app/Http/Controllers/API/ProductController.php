@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
@@ -120,6 +121,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         $validator = Validator::make($request->all(), [
             'id_category' => 'required|max:191',
             'meta_title' => 'required|max:191',
@@ -166,10 +168,11 @@ class ProductController extends Controller
                     $product->image = 'uploads/product/'.$filename;
                 }
                 
-                $product->featured = $request->featured == true ? "1" : "0";
-                $product->popular = $request->popular == true ? "1" : "0";
-                $product->status = $request->status == true ? "1" : "0";
+                $product->featured = $request->featured;
+                $product->popular = $request->popular;
+                $product->status = $request->status;
                 $product->save();
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'Modification effectuée!',
@@ -180,7 +183,6 @@ class ProductController extends Controller
                     'message' => 'Product Not Found'
                 ]);
             }
-   
         }
     }
 

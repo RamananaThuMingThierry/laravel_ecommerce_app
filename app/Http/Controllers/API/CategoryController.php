@@ -63,7 +63,7 @@ class CategoryController extends Controller
                 $category->slug = $request->slug;
                 $category->name = $request->name;
                 $category->description = $request->description;
-                $category->status = ($request->status === true ? "1" : "0");
+                $category->status = $request->status;
                 $category->save();
             
             return response()->json([
@@ -140,7 +140,7 @@ class CategoryController extends Controller
                 $category->slug = $request->slug;
                 $category->name = $request->name;
                 $category->description = $request->description;
-                $category->status = $request->status === true ? 1 : 0;
+                $category->status = $request->status;
                 $category->save();
 
                 return response()->json([
