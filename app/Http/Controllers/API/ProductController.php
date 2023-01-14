@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
@@ -195,5 +196,35 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function fetchproduct($slug){
+
+        $category = Category::where('slug', $slug)->where('status', '0')->first();
+
+        if($category){
+            
+            $products = Product::where('id_category', $category->id)->where('status','0')->get();
+        
+            if($products){
+                return response()->json([
+                    'status' => 200,
+                    'product_data' => [
+                        'products' => $products,
+                        'categorys' => $category
+                    ]
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'No Product Available'
+                ]);
+            }
+        }else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'No such Category Found'
+            ]);
+        }
     }
 }
