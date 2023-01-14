@@ -35,6 +35,7 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
     Route::get('retreive-product/{id}', [ProductController::class, 'retreive']);   // Voir un produits
     Route::post('update-product/{id}', [ProductController::class, 'update']);   // Modifier un produits
     Route::get('fetchproduct/{slug}', [ProductController::class, 'fetchproduct']);   // Modifier un produits
+    Route::get('collections-view-product/{category_slug}/{product_slug}', [ProductController::class, 'productdetails']);   // Modifier un produits
    
    
     // users

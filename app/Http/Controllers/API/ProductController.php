@@ -200,7 +200,7 @@ class ProductController extends Controller
 
     public function fetchproduct($slug){
 
-        $category = Category::where('slug', $slug)->where('status', '0')->first();
+        $category = Category::where('slug', $slug)->where('status', '1')->first();
 
         if($category){
             
@@ -213,6 +213,35 @@ class ProductController extends Controller
                         'products' => $products,
                         'categorys' => $category
                     ]
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'No Product Available'
+                ]);
+            }
+        }else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'No such Category Found'
+            ]);
+        }
+    }
+
+    public function productdetails($category_slug, $product_slug){
+        $category = Category::where('slug', $category_slug)->where('status', '1')->first();
+
+        if($category){
+            
+            $product = Product::where('id_category', $category->id)
+                                ->where('slug',$product_slug)
+                                ->where('status','0')
+                                ->first();
+        
+            if($product){
+                return response()->json([
+                    'status' => 200,
+                    'product' => $product
                 ]);
             }else{
                 return response()->json([
