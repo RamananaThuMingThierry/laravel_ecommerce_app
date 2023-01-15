@@ -11,9 +11,12 @@ use App\Http\Controllers\API\CartController;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('add-to-cart',[CartController::class, 'addtocart']);
+Route::post('place-order',[CheckoutController::class, 'commandes']);
 Route::get('cart',[CartController::class, 'show']);
 Route::delete('delete-cartitem/{cart_id}',[CartController::class, 'destroy']);
 Route::put('cart-updatequantity/{cart_id}/{scope}',[CartController::class, 'updatequantity']);
+
+
 
 Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
 
