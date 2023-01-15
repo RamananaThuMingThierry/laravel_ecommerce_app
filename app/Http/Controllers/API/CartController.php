@@ -85,9 +85,21 @@ class CartController extends Controller
      * @param  \App\Models\carts  $carts
      * @return \Illuminate\Http\Response
      */
-    public function show(carts $carts)
+    public function show()
     {
-        //
+        if(auth('sanctum')->check()){
+            $user_id = auth('sanctum')->user()->id;
+            $cartitem = carts::where('user_id', $user_id)->get();
+            return response()->json([
+                'status' => 200,
+                'cart' => $cartitem
+            ]);
+        }else{
+            return response()->json([
+                'status' => 401,
+                'message' => "Login to view Cart Data",
+            ]);
+        }
     }
 
     /**
