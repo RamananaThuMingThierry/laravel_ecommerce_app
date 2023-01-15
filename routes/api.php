@@ -6,9 +6,11 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UsersController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\CartController;
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
+Route::post('add-to-cart',[CartController::class, 'addtocart']);
 
 Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
 
@@ -35,7 +37,7 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
     Route::get('retreive-product/{id}', [ProductController::class, 'retreive']);   // Voir un produits
     Route::post('update-product/{id}', [ProductController::class, 'update']);   // Modifier un produits
     Route::get('fetchproduct/{slug}', [ProductController::class, 'fetchproduct']);   // Modifier un produits
-    Route::get('collections-view-product/{category_slug}/{product_slug}', [ProductController::class, 'productdetails']);   // Modifier un produits
+    Route::get('collections-view-product/{category_slug}/{product_slug}', [ProductController::class, 'productdetails']);   // Collections veiw produits
    
    
     // users
