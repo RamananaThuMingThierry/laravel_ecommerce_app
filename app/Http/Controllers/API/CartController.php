@@ -120,9 +120,29 @@ class CartController extends Controller
      * @param  \App\Models\carts  $carts
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, carts $carts)
+    public function updatequantity($cart_id, $scope)
     {
-        //
+        if(auth('sanctum')->check()){
+            $user_id = auth('sanctum')->user()->id;
+            $cartitem = carts::where('id', $cart_id)->where('user_id', $user_id)->first();
+            if($scope == "in"){
+                $cartitem->product_quantity += 1;
+            }else if($scope =="desc"){
+                $cartitem->product_quantity -= 1;
+            }
+            $cartitem->update();
+            
+            return response()->json([
+                'status' => 200,
+                'message' => 'Quantity update',
+            ]);
+
+        }else{
+            return response()->json([
+                'status' => 401,
+                'message' => 'Login to continue',
+            ]);
+        }    
     }
 
     /**
@@ -131,8 +151,30 @@ class CartController extends Controller
      * @param  \App\Models\carts  $carts
      * @return \Illuminate\Http\Response
      */
-    public function destroy(carts $carts)
+    public function destroy($cart_id)
     {
-        //
+        if(auth('sanctum')->check()){
+            $user_id = auth('sanctum')->user()->id;
+            $cartitem = carts::where('id', $cart_id)->where('user_id', $user_id)->first();
+
+            if($cartitem){
+                $cartitem->delete();
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Cart Item Removed Successfully',
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Cart Item not Found',
+                ]);
+            }
+        }else{
+            return response()->json([
+                'status' => 401,
+                'message' => 'Login to continue',
+            ]);
+        }
     }
 }
