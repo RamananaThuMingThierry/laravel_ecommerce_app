@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
+use App\Models\carts;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class CheckoutController extends Controller
 {
@@ -19,6 +21,7 @@ class CheckoutController extends Controller
     }
 
     public function commandes(Request $request){
+
         if(auth('sanctum')->check()){
 
             $validator = Validator::make($request->all(), [
@@ -30,20 +33,21 @@ class CheckoutController extends Controller
                 'city' => 'required|max:191',
                 'address' => 'required|max:191',
                 'zipcode' => 'required|max:191',
-                'state' => 'required|max:191',z
+                'state' => 'required|max:191',
             ]);
 
             if($validator->fails()){
                 return response()->json([
                     'status' => 422,
-                    'message' => $validator->messages()
+                    'errors' => $validator->messages()
                 ]);
             }else{
 
                 $user_id = auth('sanctum')->user()->id;
-
-                $orders = new Order;
-                $order->user_id = auth('sanctum')->user()->id;
+                
+                $order = new Order;
+                
+                $order->user_id = $user_id;
                 $order->firstname = $request->firstname;
                 $order->lastname = $request->lastname;
                 $order->phone = $request->phone;
@@ -63,7 +67,7 @@ class CheckoutController extends Controller
                     
                     $orderitems[] = [
                         'product_id' => $item->product_id,
-                        'product_quantity' => $item->product_quantity,
+                        'quantity' => $item->product_quantity,
                         'price' => $item->product->selling_price,
                     ];
 
@@ -75,6 +79,7 @@ class CheckoutController extends Controller
 
 
                 $order->orderitems()->createMany($orderitems);
+                carts::destroy($carts);
                 
                 return response()->json([
                     'status' => 200,

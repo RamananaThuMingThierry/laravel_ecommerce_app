@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('payment_mode');
             $table->string('tracking_no');
             $table->tinyInteger('status')->default('0');
-            $table->text('remark');
+            $table->text('remark')->nallable();
             $table->timestamps();
         });
     }

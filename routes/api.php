@@ -3,10 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\UsersController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\CategoryController;
-use App\Http\Controllers\API\CartController;
+use App\Http\Controllers\API\CheckoutController;
 
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
@@ -15,8 +16,6 @@ Route::post('place-order',[CheckoutController::class, 'commandes']);
 Route::get('cart',[CartController::class, 'show']);
 Route::delete('delete-cartitem/{cart_id}',[CartController::class, 'destroy']);
 Route::put('cart-updatequantity/{cart_id}/{scope}',[CartController::class, 'updatequantity']);
-
-
 
 Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
 
@@ -27,8 +26,6 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
     });
 
     Route::get('view-category', [CategoryController::class, 'index']);
-
-    
     // Catégories
 
     Route::post('store-category', [CategoryController::class, 'store']);   // Créer un catégorie
@@ -44,7 +41,6 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function(){
     Route::post('update-product/{id}', [ProductController::class, 'update']);   // Modifier un produits
     Route::get('fetchproduct/{slug}', [ProductController::class, 'fetchproduct']);   // Modifier un produits
     Route::get('collections-view-product/{category_slug}/{product_slug}', [ProductController::class, 'productdetails']);   // Collections veiw produits
-   
    
     // users
     Route::get('users', [UsersController::class, 'index']);   // Liste des utilisateurs
